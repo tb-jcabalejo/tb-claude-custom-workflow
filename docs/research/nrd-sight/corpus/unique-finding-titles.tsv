@@ -1,0 +1,97 @@
+afod_39	[consider · architecture] 121-line payload snapshot guards a threat the SPA cannot stop
+opendistribution-stubhub-data-collection-worker_11	[consider · architecture] Comp reader points at a table this change stops writing
+afod_54	[consider · correctness] "Open in POS" keys on StubHub listing id, not a POS listing id
+aap_225	[consider · correctness] Admin Portal TD-linked precedence relies on caller-side dict ordering, not shown
+afod_106	[consider · correctness] Collapsing the matrix discards every show's session page
+snowflake-migration_11	[consider · correctness] Comp set has no source filter
+snowflake-migration_18	[consider · correctness] Currency pick counts OD listings that the view then drops
+opendistribution-api_19	[consider · correctness] Dashboard role set excludes roles named in the acceptance criteria
+afod_27	[consider · correctness] Dedup-by-order-number in legacy fallback can merge purchases with different costs
+afod_54	[consider · correctness] Drawer holds a row snapshot that goes stale after Refresh
+aap_350	[consider · correctness] Legacy flattened update path can silently store mismatched total-cost currency on manual purchases
+afod_66	[consider · correctness] Matrix does not auto-collapse on drill-down, as the acceptance criteria require
+snowflake-migration_11	[consider · correctness] No source filter on the market rows used for comps
+opendistribution-stubhub-data-collection-worker_21	[consider · correctness] OPE-438 not closed: ticket's secrets untouched, old copy left in place, values unverified
+snowflake-migration_11	[consider · correctness] Own OD listings can still surface as cheapest non-OD comp
+snowflake-migration_11	[consider · correctness] Own-listing exclusion depends on change history covering every created listing
+opendistribution-stubhub-data-collection-worker_11	[consider · correctness] Pricing comps read a table that is no longer written and has no freshness guard
+marketplace-sync-manager_75	[consider · correctness] TB POS is not held during comp outages
+aap_281	[consider · correctness] _find_unlinked_admin_purchase silently no-ops when order_number is None
+afod_21	[consider · correctness] api_cost_currency is always sent even when api_cost is null, which may silently set a currency without an amount
+aap_174	[consider · correctness] clear_fulfillment check does not account for api_cost=0.0
+afod_31	[consider · correctness] currency_code nulling behavior changed subtly
+aap_299	[consider · correctness] int(raw) coercion on invoice id keys can silently drop or mis-key rows
+snowflake-migration_11	[consider · correctness] source column is exposed but never filtered in the comp view
+opendistribution-api_19	[consider · cost] Unscoped MAX(INSERTDATE) scan on every summary cache miss
+opendistribution-api_2	[consider · ownership] Change doesn't match the linked ticket
+snowflake-migration_18	[consider · pattern_fit] Comp-set rules duplicated in two views instead of shared like the attempt logic
+afod_24	[consider · pattern_fit] New quote-aware record splitter duplicates logic sales-orders export doesn't use
+snowflake-postgres-data-sync_199	[consider · performance] Confirm indexes exist for the per-run count and per-session delete
+afod_39	[consider · performance] Each save adds three network round trips, one a 500-row list fetch
+snowflake-migration_11	[consider · performance] Hourly task reparses 90 days of listings twice
+snowflake-migration_11	[consider · performance] Hourly task scans the full 90-day listing history twice to find the latest session
+postgresql-migration-open-distribution_28	[consider · performance] No index for the new latest-pos-snapshot lookup
+aap_321	[consider · performance] Per-row re-query of all purchases after each new-row insert
+aap_321	[consider · performance] Re-fetches all purchase rows with FOR UPDATE after every insert in the upsert loop
+opendistribution-api_71	[consider · performance] Share cache holds whole-account indexes with no byte bound
+opendistribution-api_71	[consider · performance] Share index built synchronously on the event loop
+aap_321	[consider · reliability] Advisory lock namespace shared across all orders
+opendistribution-api_2	[consider · reliability] Audit table DDL not in this PR; deploy order matters
+marketplace-sync-manager_75	[consider · reliability] Comp outage also freezes inventory changes on auto-priced listings
+marketplace-sync-manager_75	[consider · reliability] Empty comps may reprice auto-priced listings to the markup default with no alert
+aap_281	[consider · reliability] Insert path can race with the TD/SH poller and create duplicate purchase rows
+aap_427	[consider · reliability] Migration for open_dist.sales_order_field_update_audit not visible
+aap_376	[consider · reliability] PATCH route still has a duplicate role list to keep in sync
+opendistribution-stubhub-data-collection-worker_11	[consider · reliability] StubHub GET can run uncapped when the Redis client is missing
+aap_243	[consider · security] Edit-payload endpoint grants full read access with no separate write gate
+afod_39	[consider · security] Exploit closure depends on backend enforcement that isn't linked or visible
+aap_374	[consider · security] Timezone query param accepts any valid IANA zone, not just the two the UI offers
+admin-frontend_452	[consider · security] Verify the new route key has role rows, or the page opens to every signed-in user
+afod_39	[consider · security] opendistribution-api enforcement link is still a placeholder
+afod_33	[critical · security] Authorization enforced only in the browser, not on the server
+afod_39	[critical · security] Authorization is enforced only in browser code; the API is still open
+afod_39	[critical · security] IDOR fix depends on an admin-api behavior this PR never shows
+afod_39	[critical · security] Nothing enforces role, order or audit — the exploit is not closed
+aap_350	[important · correctness] Admin manual purchase never persists its own api_cost_currency
+afod_32	[important · correctness] Client-side row filtering can silently drop/truncate data at the 5,000-row export cap
+snowflake-migration_18	[important · correctness] Currency is chosen from rows the view later drops for null raw_price
+marketplace-sync-manager_75	[important · correctness] No-comps hold leaks GA and seatless StubHub listings to markup price
+afod_39	[important · correctness] Order lookup uses a fuzzy search capped at 500 rows, so valid edits can be refused
+opendistribution-api_19	[important · correctness] Orphan POS rows duplicate across Outbox events that share a StubHub event
+snowflake-migration_11	[important · correctness] Own listings created before 2026-09-22 can be returned as cheapest non-OD comp
+snowflake-migration_11	[important · correctness] Own listings created before 2026-09-22 can still be returned as cheapest non-OD comp
+opendistribution-api_71	[important · correctness] Partially unscoped POS rows still read a false 'missing' on StubHub
+snowflake-migration_11	[important · correctness] Pre-2026-09-22 own listings can surface as cheapest non-OD comp
+afod_106	[important · correctness] Refetch with changed counts resets every show's session page
+afod_31	[important · correctness] Removing quantity-total validation drops client-side protection with no visible replacement
+afod_27	[important · correctness] Removing row 1 silently changes the shared currency for all other rows
+opendistribution-stubhub-data-collection-worker_11	[important · correctness] Retried shows can leave a partial book as the latest snapshot and defeat the documented dedupe
+snowflake-migration_11	[important · correctness] Settle guard checks rows, not sessions, so a session still landing can be picked
+afod_27	[important · correctness] Shared currency propagation only fires on row 1's onChange, not on row removal or add-then-edit order changes
+afod_54	[important · correctness] Stale POS matrix cell shows listing count, not excess tickets
+opendistribution-api_19	[important · correctness] Stale listings get the StubHub error diagnosis instead of the quantity delta
+afod_54	[important · correctness] Stale/Missing KPI click lands on an empty queue when a session is selected
+marketplace-sync-manager_75	[important · correctness] TradeDesk transfers bypass the comp-outage hold
+marketplace-sync-manager_75	[important · correctness] TradeDesk transfers reprice auto-priced listings during a comp outage
+aap_174	[important · correctness] api_cost_currency defaults to currency_code even when api_cost is zero
+aap_321	[important · correctness] quantity_is_set uses model_fields_set but request quantity also has ge=1 validator
+aap_321	[important · correctness] sale_currency always None when building editable purchase rows
+aap_321	[important · correctness] sale_currency always passed as None to editable-purchase builder
+aap_321	[important · ownership] Debug-logging scaffolding writing to a hardcoded Windows path
+opendistribution-api_2	[important · ownership] Description promises a persisted, atomic audit that isn't in the diff
+afod_39	[important · ownership] PR description and test plan describe behavior the code no longer has
+afod_39	[important · ownership] PR description and test plan describe behavior this diff removed
+afod_39	[important · ownership] PR description and test plan describe removed behavior
+aap_427	[important · reliability] Audit insert failure returns 500 after the write has committed
+postgresql-migration-open-distribution_28	[important · reliability] Check constraint validation scans the whole table under ACCESS EXCLUSIVE
+aap_299	[important · reliability] No error handling around the two Invoice Log fetches
+aap_427	[important · reliability] No migration for open_dist.sales_order_field_update_audit
+opendistribution-api_19	[important · reliability] Timed-out Snowflake threads keep running on the shared default executor
+snowflake-migration_11	[important · reliability] _dt snapshot has no 12-hour staleness guard
+aap_427	[important · security] Audit omits cost fields on legacy-shape writes
+aap_427	[important · security] Audit record omits cost and order-number fields on legacy-shape writes
+aap_427	[important · security] Audit still omits cost fields on legacy-shape writes
+afod_39	[important · security] Audit trail is a console.info in the browser
+afod_39	[important · security] Exploit closure rests on unlinked admin-api behavior
+afod_39	[important · security] Ownership check is just "the list endpoint returned this order"
+afod_33	[important · security] Role list is client-supplied and can be stale or tampered with

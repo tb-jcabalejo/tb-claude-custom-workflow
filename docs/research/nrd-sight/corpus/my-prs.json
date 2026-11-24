@@ -1,0 +1,826 @@
+[
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 106,
+    "title": "OPE-464, OPE-466, OPE-467: KPI card filter and per-show session paging on Listing Issues",
+    "state": "merged",
+    "createdAt": "2026-11-20T17:30:43Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/106"
+  },
+  {
+    "repo": "ticketboat/opendistribution-api",
+    "number": 71,
+    "title": "OPE-464, OPE-465: fix Listing Issues event times and StubHub received counts",
+    "state": "merged",
+    "createdAt": "2026-11-20T17:30:04Z",
+    "url": "https://github.com/ticketboat/opendistribution-api/pull/71"
+  },
+  {
+    "repo": "ticketboat/opendistribution-stubhub-data-collection-worker",
+    "number": 21,
+    "title": "OPE-462: Stop StubHub data collection from starving listing post/update/delete",
+    "state": "open",
+    "createdAt": "2026-11-20T11:21:00Z",
+    "url": "https://github.com/ticketboat/opendistribution-stubhub-data-collection-worker/pull/21"
+  },
+  {
+    "repo": "ticketboat/marketplace-sync-manager",
+    "number": 75,
+    "title": "OPE-387: auto price only on pos_listings_api comps from the last 12 hours",
+    "state": "open",
+    "createdAt": "2026-11-16T19:53:16Z",
+    "url": "https://github.com/ticketboat/marketplace-sync-manager/pull/75"
+  },
+  {
+    "repo": "ticketboat/snowflake-postgres-data-sync",
+    "number": 199,
+    "title": "OPE-387: sync StubHub API comps to OD Postgres; retry only failed SQS records",
+    "state": "merged",
+    "createdAt": "2026-11-16T19:51:59Z",
+    "url": "https://github.com/ticketboat/snowflake-postgres-data-sync/pull/199"
+  },
+  {
+    "repo": "ticketboat/snowflake-migration",
+    "number": 18,
+    "title": "OPE-387: add od_stubhub_listing_collection_v and share latest-attempt logic with alg2",
+    "state": "merged",
+    "createdAt": "2026-11-16T19:50:54Z",
+    "url": "https://github.com/ticketboat/snowflake-migration/pull/18"
+  },
+  {
+    "repo": "ticketboat/postgresql-migration-open-distribution",
+    "number": 28,
+    "title": "OPE-285: add source and price_currency_code to open_dist.stubhub_listing_collection",
+    "state": "merged",
+    "createdAt": "2026-11-16T19:50:03Z",
+    "url": "https://github.com/ticketboat/postgresql-migration-open-distribution/pull/28"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 67,
+    "title": "OPE-352: Fix ListingIssues build error by deduplicating dayjs in bun.lock",
+    "state": "merged",
+    "createdAt": "2026-11-12T12:12:46Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/67"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 66,
+    "title": "OPE-352: Listing Issues dashboard page",
+    "state": "closed",
+    "createdAt": "2026-11-12T11:39:54Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/66"
+  },
+  {
+    "repo": "ticketboat/opendistribution-api",
+    "number": 19,
+    "title": "OPE-352: Listing Issues API (StubHub share + OD change history)",
+    "state": "merged",
+    "createdAt": "2026-11-09T17:17:13Z",
+    "url": "https://github.com/ticketboat/opendistribution-api/pull/19"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 54,
+    "title": "OPE-352: Listing Issues dashboard page",
+    "state": "merged",
+    "createdAt": "2026-11-09T17:16:31Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/54"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 452,
+    "title": "OPE-352: Wire Listing Issues remote page into admin shell",
+    "state": "merged",
+    "createdAt": "2026-11-09T17:15:41Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/452"
+  },
+  {
+    "repo": "ticketboat/snowflake-migration",
+    "number": 11,
+    "title": "Add OD StubHub listing import table, pipe, history view, and hourly ALG2 comp view",
+    "state": "merged",
+    "createdAt": "2026-10-29T18:13:39Z",
+    "url": "https://github.com/ticketboat/snowflake-migration/pull/11"
+  },
+  {
+    "repo": "ticketboat/opendistribution-stubhub-data-collection-worker",
+    "number": 11,
+    "title": "Emit importer-shaped listing records to od_stubhub_listing_import_history S3 prefix for Snowpipe ingestion",
+    "state": "merged",
+    "createdAt": "2026-10-29T18:12:24Z",
+    "url": "https://github.com/ticketboat/opendistribution-stubhub-data-collection-worker/pull/11"
+  },
+  {
+    "repo": "ticketboat/opendistribution-api",
+    "number": 2,
+    "title": "OPE-307: Enforce authorization and persist audit for PATCH /odis/sales-orders",
+    "state": "merged",
+    "createdAt": "2026-10-28T11:46:38Z",
+    "url": "https://github.com/ticketboat/opendistribution-api/pull/2"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 427,
+    "title": "fix(ENG-2274): Enforce role-only authorization for sales-order edits",
+    "state": "open",
+    "createdAt": "2026-10-21T20:22:30Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/427"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 39,
+    "title": "fix(ENG-2274): refuse sales-order field edits the signed-in user does not own",
+    "state": "open",
+    "createdAt": "2026-10-21T16:36:19Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/39"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 33,
+    "title": "fix: block sales-order field edits the signed-in user cannot make",
+    "state": "merged",
+    "createdAt": "2026-10-08T15:54:23Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/33"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 376,
+    "title": "Reject unauthorized sales-order field edits before they are written.",
+    "state": "merged",
+    "createdAt": "2026-10-08T09:34:28Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/376"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 32,
+    "title": "OPE-104: export raw outbox purchases in US Eastern so Cirque bills can be reconciled",
+    "state": "merged",
+    "createdAt": "2026-10-07T17:41:18Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/32"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 374,
+    "title": "feat(ENG-1936): edit real Outbox purchases with per-row currency and …",
+    "state": "merged",
+    "createdAt": "2026-10-07T17:39:54Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/374"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 360,
+    "title": "ENG-2020: Match sales-order export API cost currency to the stored purchase currency",
+    "state": "merged",
+    "createdAt": "2026-10-01T17:29:23Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/360"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 31,
+    "title": "fix(OPE-95): Save API cost currency separately from total cost currency",
+    "state": "merged",
+    "createdAt": "2026-09-28T11:01:48Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/31"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 350,
+    "title": "OPE-95: Persist API cost currency separately from total cost",
+    "state": "merged",
+    "createdAt": "2026-09-28T11:00:32Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/350"
+  },
+  {
+    "repo": "ticketboat/postgresql-migration-open-distribution",
+    "number": 4,
+    "title": "feat(OPE-95): Add api_cost_currency_code to SH and TD outbox purchase tables",
+    "state": "merged",
+    "createdAt": "2026-09-28T09:14:23Z",
+    "url": "https://github.com/ticketboat/postgresql-migration-open-distribution/pull/4"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 27,
+    "title": "feat(OPE-82): edit Outbox purchases as individual rows with quantity",
+    "state": "merged",
+    "createdAt": "2026-09-18T20:06:25Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/27"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 321,
+    "title": "OPE-82: Edit Sales Order Outbox purchases by id, including quantity",
+    "state": "merged",
+    "createdAt": "2026-09-18T20:05:05Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/321"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 299,
+    "title": "OPE-70: Fill missing total_raw_api_cost on Raw Outbox Purchases export",
+    "state": "merged",
+    "createdAt": "2026-09-14T19:03:09Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/299"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 281,
+    "title": "fix(ENG-1761): persist empty sales-order edits onto Outbox purchase rows",
+    "state": "merged",
+    "createdAt": "2026-09-10T10:01:05Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/281"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 263,
+    "title": "fix(ENG-1761,ENG-1764,ENG-1767): keep sales-order edits after ingest; Chicago Outbox export at 10k",
+    "state": "merged",
+    "createdAt": "2026-09-07T08:19:08Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/263"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 243,
+    "title": "ENG-1528: Allow accounts editors to fetch credit card edit payload",
+    "state": "merged",
+    "createdAt": "2026-08-31T11:48:02Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/243"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 214,
+    "title": "ENG-1528: Allow ams_accounts_editor to edit AMS credit cards",
+    "state": "merged",
+    "createdAt": "2026-08-28T13:17:02Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/214"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 24,
+    "title": "ENG-1683: Include Event, Venue, Event Date and Event Time in Raw Outbox Purchases export",
+    "state": "merged",
+    "createdAt": "2026-08-28T12:59:43Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/24"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 225,
+    "title": "ENG-1683: Include Event, Venue, Event Date and Event Time in Raw Outbox Purchases export",
+    "state": "merged",
+    "createdAt": "2026-08-28T12:58:29Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/225"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 23,
+    "title": "ENG-1657: Add Raw Outbox Purchases Export and Reorganize Sales Orders Toolbar",
+    "state": "merged",
+    "createdAt": "2026-08-25T14:50:00Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/23"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 218,
+    "title": "ENG-1657: Export raw Outbox purchases CSV from Sales Orders",
+    "state": "merged",
+    "createdAt": "2026-08-25T14:47:05Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/218"
+  },
+  {
+    "repo": "iamjcabalejo/tb-custom-workflow",
+    "number": 2,
+    "title": "feat(git): add commit-push command that never ships to default",
+    "state": "merged",
+    "createdAt": "2026-08-25T13:13:21Z",
+    "url": "https://github.com/iamjcabalejo/tb-custom-workflow/pull/2"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 189,
+    "title": "ENG-407, ENG-1589, ENG-1528: Add sortable BIN column to AMS Credit Cards and fix gate AMS credit-card edit on card roles ",
+    "state": "merged",
+    "createdAt": "2026-08-21T19:34:14Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/189"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 198,
+    "title": "ENG-407: expose sortable BIN on AMS credit cards filtered list",
+    "state": "merged",
+    "createdAt": "2026-08-21T19:29:21Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/198"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 178,
+    "title": "fix build errors",
+    "state": "merged",
+    "createdAt": "2026-08-14T18:11:25Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/178"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 185,
+    "title": "ENG-1522: Add account_info_count to GET /real-persons",
+    "state": "merged",
+    "createdAt": "2026-08-14T18:04:29Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/185"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 177,
+    "title": "ENG-1522: Sort AMS Real Persons Accounts across all pages",
+    "state": "merged",
+    "createdAt": "2026-08-14T18:02:57Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/177"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 176,
+    "title": "fix: build error",
+    "state": "merged",
+    "createdAt": "2026-08-13T15:37:10Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/176"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 175,
+    "title": "ENG-1528, ENG-1196: Add Edit buttons to AMS credit card and account view modals",
+    "state": "merged",
+    "createdAt": "2026-08-13T14:56:08Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/175"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 184,
+    "title": "OPE-38: Clarify Sales Orders CSV currency columns",
+    "state": "merged",
+    "createdAt": "2026-08-12T22:31:58Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/184"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 22,
+    "title": "OPE-38: Add API Cost Currency column to Sales Orders export",
+    "state": "merged",
+    "createdAt": "2026-08-12T22:30:20Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/22"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 158,
+    "title": "ENG-1467: Move Import Primaries to AMS Maintenance",
+    "state": "merged",
+    "createdAt": "2026-08-06T20:47:25Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/158"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 174,
+    "title": "OPE-20: Allow editing API Cost on Sales Orders",
+    "state": "merged",
+    "createdAt": "2026-08-05T19:27:10Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/174"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 21,
+    "title": "OPE-20: Allow editing API Cost on Sales Orders",
+    "state": "merged",
+    "createdAt": "2026-08-05T19:25:44Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/21"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 20,
+    "title": "OPE-22 (ENG-1387 previously): Restrict Sales Order editing to allowed portal roles",
+    "state": "merged",
+    "createdAt": "2026-08-04T20:26:53Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/20"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 154,
+    "title": "ENG-1416: Multi-select Phone Status on AMS Physical Phones",
+    "state": "merged",
+    "createdAt": "2026-08-03T20:38:02Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/154"
+  },
+  {
+    "repo": "iamjcabalejo/tb-custom-workflow",
+    "number": 1,
+    "title": "Cursor/graphify phase budget",
+    "state": "merged",
+    "createdAt": "2026-08-01T23:34:23Z",
+    "url": "https://github.com/iamjcabalejo/tb-custom-workflow/pull/1"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 167,
+    "title": "ENG-1396: Fix Australia StubHub costs labeled AUD when amounts are USD",
+    "state": "merged",
+    "createdAt": "2026-07-30T22:45:29Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/167"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 166,
+    "title": "ENG-1396: Fix Australia StubHub costs labeled AUD when amounts are USD",
+    "state": "closed",
+    "createdAt": "2026-07-30T22:33:46Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/166"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 149,
+    "title": "fix(ENG-1329): Restore Account Tags filter search on Physical Phones and Phone Numbers",
+    "state": "merged",
+    "createdAt": "2026-07-28T15:48:52Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/149"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 18,
+    "title": "fix(ENG-1432): Show empty API Cost (Total) when api_cost_total_local is missing",
+    "state": "merged",
+    "createdAt": "2026-07-28T15:25:51Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/18"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 162,
+    "title": "ENG-1394: Sales Orders API Cost and Outbox # from Invoice Logs",
+    "state": "merged",
+    "createdAt": "2026-07-27T11:59:38Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/162"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 17,
+    "title": "fix(ENG-1379): lock same-day Sales Order edit using local Order Created day",
+    "state": "merged",
+    "createdAt": "2026-07-23T14:19:15Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/17"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 16,
+    "title": "fix(ENG-1379, ENG-1389): same-day edit lock and keep Edit modal open until dismissed",
+    "state": "merged",
+    "createdAt": "2026-07-22T17:10:45Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/16"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 15,
+    "title": "fix(ENG-1392): Sales Orders Outbox modal shows wrong Total Price currency",
+    "state": "merged",
+    "createdAt": "2026-07-22T16:23:42Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/15"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 159,
+    "title": "fix(ENG-1344): Align TradeDesk API Cost with Invoice Status totalPrice",
+    "state": "merged",
+    "createdAt": "2026-07-21T15:28:11Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/159"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 154,
+    "title": "fix(ENG-1380): preserve spaces within Outbox order numbers",
+    "state": "merged",
+    "createdAt": "2026-07-17T19:06:29Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/154"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 141,
+    "title": "ENG-1338, ENG-402: Improve AMS filter layout and physical phone form",
+    "state": "merged",
+    "createdAt": "2026-07-17T18:56:44Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/141"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 13,
+    "title": "ENG-1380: Allow supported symbols in Outbox Orders",
+    "state": "merged",
+    "createdAt": "2026-07-17T18:06:40Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/13"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 153,
+    "title": "ENG-1380: Allow supported symbols in Outbox Orders",
+    "state": "merged",
+    "createdAt": "2026-07-17T18:05:38Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/153"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 12,
+    "title": "Fix Total Cost display and guidance for sales orders",
+    "state": "merged",
+    "createdAt": "2026-07-17T16:38:16Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/12"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 152,
+    "title": "ENG-1344: Correct StubHub API Cost Total calculation",
+    "state": "merged",
+    "createdAt": "2026-07-17T16:35:52Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/152"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 11,
+    "title": "ENG-1344: Add API Cost (Total) column and separate manual Total Cost (Local)",
+    "state": "merged",
+    "createdAt": "2026-07-16T13:17:45Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/11"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 151,
+    "title": "ENG-1344: Add API cost total (local) to sales orders",
+    "state": "merged",
+    "createdAt": "2026-07-16T13:15:34Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/151"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 10,
+    "title": "fix(ENG-1286): Show purchase currency in Total Cost (Local) column",
+    "state": "merged",
+    "createdAt": "2026-07-15T12:03:19Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/10"
+  },
+  {
+    "repo": "ticketboat/admin-frontend-open-distribution",
+    "number": 9,
+    "title": "ENG-1286: Sales Orders — edit fulfillment and seating fields",
+    "state": "merged",
+    "createdAt": "2026-07-15T10:35:52Z",
+    "url": "https://github.com/ticketboat/admin-frontend-open-distribution/pull/9"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 149,
+    "title": "ENG-1286: PATCH /odis/sales-orders for Sales Orders edit modal",
+    "state": "merged",
+    "createdAt": "2026-07-15T10:33:14Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/149"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 131,
+    "title": "ENG-1306: Fix incoming email table last row clipped by pagination bar",
+    "state": "merged",
+    "createdAt": "2026-07-10T14:12:00Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/131"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 129,
+    "title": "ENG-652: Incoming email Last Received dates and table pagination fixes",
+    "state": "merged",
+    "createdAt": "2026-07-09T14:22:27Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/129"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 135,
+    "title": "ENG-486: update quiery to include phone number in search",
+    "state": "merged",
+    "createdAt": "2026-07-08T17:32:20Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/135"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 127,
+    "title": "ENG-486: udpate placeholder to include phone number",
+    "state": "merged",
+    "createdAt": "2026-07-08T17:31:33Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/127"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 126,
+    "title": "ENG-403, ENG-402: Disable account and provider fields on physical phone modals",
+    "state": "merged",
+    "createdAt": "2026-07-08T15:00:36Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/126"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 122,
+    "title": "ENG-391: Limit Account Tags filters to Account type only",
+    "state": "merged",
+    "createdAt": "2026-07-07T13:09:33Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/122"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 118,
+    "title": "ENG-461: disable browser autofill on Create Date and Last Date Modified filters",
+    "state": "merged",
+    "createdAt": "2026-07-03T12:01:15Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/118"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 127,
+    "title": "ENG-388: Physical phones create date and last modified date filters",
+    "state": "merged",
+    "createdAt": "2026-07-02T17:50:44Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/127"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 116,
+    "title": "ENG-388: Physical Phones — Create Date and Last Modified filters",
+    "state": "merged",
+    "createdAt": "2026-07-02T17:49:34Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/116"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 119,
+    "title": "ENG-395: Credit card create date and last modified date filters (backend)",
+    "state": "merged",
+    "createdAt": "2026-07-01T18:46:27Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/119"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 109,
+    "title": "ENG-395: Add Create Date and Last Modified filters to Credit Cards",
+    "state": "merged",
+    "createdAt": "2026-07-01T18:45:34Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/109"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 112,
+    "title": "ENG-405: add Create Date and Last Modified filters to addresses filtered endpoint",
+    "state": "merged",
+    "createdAt": "2026-06-30T16:01:44Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/112"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 101,
+    "title": "ENG-405 Add Create Date and Last Modified filters to AMS Addresses",
+    "state": "merged",
+    "createdAt": "2026-06-30T16:00:18Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/101"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 111,
+    "title": "AMS-138: Add Create Date and Last Modified filters to GET /ams/emails",
+    "state": "merged",
+    "createdAt": "2026-06-29T20:29:06Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/111"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 100,
+    "title": "AMS-138: Add Create Date and Last Modified filters to AMS Emails",
+    "state": "merged",
+    "createdAt": "2026-06-29T20:26:00Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/100"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 99,
+    "title": "AMS-140, AMS-139: add created_date and last_date_modified filters to persons and real persons",
+    "state": "merged",
+    "createdAt": "2026-06-24T19:25:44Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/99"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 90,
+    "title": "AMS-139, AMS-140: Add create date and last modified filters to People Names and Real Persons",
+    "state": "merged",
+    "createdAt": "2026-06-24T19:23:53Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/90"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 98,
+    "title": "AMS-141: Add created and last-modified date filters to AMS list endpoints",
+    "state": "merged",
+    "createdAt": "2026-06-24T17:55:00Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/98"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 89,
+    "title": "AMS-141: Phone Numbers create date and last modified filters",
+    "state": "merged",
+    "createdAt": "2026-06-24T17:54:10Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/89"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 86,
+    "title": "feat: add type required",
+    "state": "merged",
+    "createdAt": "2026-06-23T13:41:39Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/86"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 92,
+    "title": "AMS-133, AMS-142, AMS-143: add last_date_modified filter to filtered AMS accounts, proxies, and physical phones",
+    "state": "merged",
+    "createdAt": "2026-06-23T12:37:51Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/92"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 84,
+    "title": "AMS-133, AMS-142, AMS-143: last modified date filter",
+    "state": "merged",
+    "createdAt": "2026-06-23T12:34:30Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/84"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 77,
+    "title": "fix: Add StatusBadge colors for In Use and Repairing",
+    "state": "merged",
+    "createdAt": "2026-06-18T19:20:09Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/77"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 76,
+    "title": "AMS-121: Fix physical phone status not sticking in view/edit modals",
+    "state": "merged",
+    "createdAt": "2026-06-18T18:59:58Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/76"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 69,
+    "title": "AMS-118: Support multi-select filters on proxies filtered endpoint",
+    "state": "merged",
+    "createdAt": "2026-06-17T19:06:58Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/69"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 64,
+    "title": "AMS-118: Multi-select filters on AMS Proxies page",
+    "state": "merged",
+    "createdAt": "2026-06-17T19:06:56Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/64"
+  },
+  {
+    "repo": "ticketboat/admin-api-python",
+    "number": 66,
+    "title": "AMS-102: Add Last 4 Digit parameter to the endpoint",
+    "state": "merged",
+    "createdAt": "2026-06-16T18:41:52Z",
+    "url": "https://github.com/ticketboat/admin-api-python/pull/66"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 62,
+    "title": "AMS-102 : CC last 4 digit Search, AMS-115 : Fix Created Date column",
+    "state": "merged",
+    "createdAt": "2026-06-16T18:40:05Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/62"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 11,
+    "title": "feat: add the Last Modified Date column with sort function",
+    "state": "merged",
+    "createdAt": "2026-06-05T18:39:06Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/11"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 10,
+    "title": "feat: add sort feature to last modified column",
+    "state": "merged",
+    "createdAt": "2026-06-05T18:27:03Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/10"
+  },
+  {
+    "repo": "ticketboat/admin-frontend",
+    "number": 9,
+    "title": "feat: update multi-select to allow cross page selection",
+    "state": "merged",
+    "createdAt": "2026-06-05T18:14:28Z",
+    "url": "https://github.com/ticketboat/admin-frontend/pull/9"
+  }
+]

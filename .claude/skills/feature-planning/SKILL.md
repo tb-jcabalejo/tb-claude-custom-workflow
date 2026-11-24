@@ -7,7 +7,7 @@ description: Break features into implementation tasks for backend and frontend. 
 
 ## Claude Code: plan file only
 
-When this skill is used (including by **/feature-plan**), write only `docs/plans/<feature-slug>.md`. No application code and no other files. Do not spawn Code or Review subagents. If asked to implement, decline and point to `/project-manager` with the plan. PLAN behavior: `.claude/rules/claude-code.md`.
+When this skill is used (including by **/feature-plan**), write only `docs/plans/<feature-slug>.md` and, when `.claude/skills/ui-mockup/SKILL.md` applies, `docs/plans/mockups/<feature-slug>.html`. No application code and no other files. Do not spawn Code or Review subagents. If asked to implement, decline and point to `/project-manager` with the plan. PLAN behavior: `.claude/rules/claude-code.md`.
 
 ## Rules to follow
 
@@ -29,6 +29,8 @@ Plans produced by **feature-plan** must include these sections so **project-mana
 - **Integration & Testing**: Unit/integration and critical path coverage
 - **File Changes**: New and modified files
 - **Dependencies / env**: Packages, env vars, config changes
+- **Design reference** (when Frontend tasks exist): supplied design link or attachment, the generated mockup path (`ui-mockup` skill), or "No visual change"
+- **Manual QA** (when any AC is UI-observable): base URL, routes, required role and visible role check (no emails), test data, mutations allowed, and one row per AC (route, steps, expected observable result, mockup state). `qa-tester` runs it after Review.
 
 ## Task Blocks for Hand-off
 
@@ -74,7 +76,8 @@ See `.claude/commands/feature-plan.md` section "Detailed output format (mandator
 
 - [ ] All required sections above are present (Scope/Metadata, Feature Overview, Acceptance criteria, Technical design, Backend tasks and/or C# Backend tasks as applicable, Frontend tasks, Integration & Testing, File changes, Dependencies/env).
 - [ ] Acceptance criteria are testable and numbered (AC-1, AC-2, …) for traceability.
-- [ ] No application code or implementation was written; only the plan document was produced.
+- [ ] UI changes: Design reference set; mockup generated when no design was supplied; Manual QA has a case for every UI-observable AC.
+- [ ] No application code or implementation was written; only the plan document (and mockup, when applicable) was produced.
 - [ ] Plan path is `docs/plans/<feature-slug>.md`. User is directed to run project-manager with that path for the next step.
 
 ## Context to Pass
