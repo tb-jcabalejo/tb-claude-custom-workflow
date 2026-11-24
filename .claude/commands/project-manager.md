@@ -1,5 +1,5 @@
 ---
-description: Take a feature plan and delegate to backend-architect (auto-selects Python/C#), frontend-architect; then trigger backend-reviewer (auto-selects Python/C#), frontend-reviewer
+description: Take a feature plan and delegate to backend-architect (auto-selects Python/C#), frontend-architect; then trigger backend-reviewer (auto-selects Python/C#), frontend-reviewer; then qa-tester (manual browser QA against the AC)
 argument-hint: [plan-path]
 disable-model-invocation: true
 ---
@@ -20,7 +20,7 @@ You are the **project-manager**. You MUST follow **`.claude/rules/token-policy.m
 
 When handing off to any agent, explicitly state the required mode (ASK / PLAN / AGENT).
 
-You receive a feature plan (from **feature-plan**), run **Code** (backend-architect, frontend-architect), then **automatically trigger code review** (backend-reviewer, frontend-reviewer). The **backend-architect** and **backend-reviewer** each **automatically select language** (Python or C#) from the plan or from the files in scope—no separate agents for Python vs C#. If reviewers report **critical issues**, you **Plan again** (rework = new AC) in **PLAN**, **Code** again in **AGENT (Code)**, **Review/Test** again—and repeat until there are no critical issues and the code is **production ready**.
+You receive a feature plan (from **feature-plan**), run **Code** (backend-architect, frontend-architect), then **automatically trigger code review** (backend-reviewer, frontend-reviewer). The **backend-architect** and **backend-reviewer** each **automatically select language** (Python or C#) from the plan or from the files in scope—no separate agents for Python vs C#. If reviewers report **critical issues**, you **Plan again** (rework = new AC) in **PLAN**, **Code** again in **AGENT (Code)**, **Review/Test** again—and repeat until there are no critical issues. Then run **Manual QA** in **AGENT (QA)**: `qa-tester` opens the app in a Playwright browser, goes to the exact pages changed, and checks every UI-observable AC. QA failures loop back through rework the same way. Only then is the code **production ready**.
 
 ## Plan to use
 
@@ -28,7 +28,9 @@ $ARGUMENTS
 
 **Interpret the arguments as:** a path to a plan file (e.g. `docs/plans/user-profile.md`) or a short feature name (e.g. `user-profile` → `docs/plans/user-profile.md`). If the path does not exist, ask the user for the correct plan file path.
 
-**Plan validation:** After loading the plan, verify it has the required sections (Scope/Metadata, Feature Overview, Acceptance criteria, Technical design, Backend tasks and/or C# Backend tasks as applicable, Frontend tasks, Integration & Testing, File changes, Dependencies/env). If any are missing or too vague, ask the user to run **feature-plan** or supply the missing sections.
+**Plan validation:** After loading the plan, verify it has the required sections (Scope/Metadata, Feature Overview, Acceptance criteria, Technical design, Backend tasks and/or C# Backend tasks as applicable, Frontend tasks, Integration & Testing, File changes, Dependencies/env). If any are missing or too vague, ask the user to run **feature-plan** or supply the missing sections. **Design reference** and **Manual QA** are expected when the plan has Frontend tasks; on older plans without them, continue (Phase D derives cases from the AC).
+
+**Resume from QA:** If the latest `docs/qa/<feature>-qa-N.md` has verdict FAIL, start at Phase C rework with its Critical items as the new AC, unless the user says to run the full plan.
 
 **Orchestrator graphify (optional, once):** If File changes are thin or you need blast radius before spawning, run **one** scoped `graphify query "…" --budget 1500` per product root and paste a short summary into Code subagent prompts. Do not load the full `/graphify` skill for routine query. Do not re-dump ticket/Linear text—pass **plan path + relevant sections** only.
 
@@ -45,8 +47,8 @@ Spawn in this order. Pass **plan path** plus **domain sections only** (not the e
 
 ### A2. Spawn `frontend-architect`
 
-- **Pass**: Plan path; **Frontend Tasks**; AC; File changes; API contract; deps. Optional: short graphify summary if you ran one.
-- **Instruct**: "Follow graphify.md phase budget: **plan-first** (File changes); query only for gaps/blast radius. Implement all frontend tasks from this feature plan per compounding-dev-cycle Code phase. Use React, Ant Design, Jotai, TanStack Query as appropriate. Create or modify the specified files. Integrate with the backend API. After edits, run `graphify update .` in the frontend root when the CLI is available. Produce handoff for Review/Test: implementation, tests where relevant, implementation notes. Link work to acceptance criteria. Do not expand scope. Return when complete."
+- **Pass**: Plan path; **Frontend Tasks**; AC; File changes; API contract; deps; **Design reference** (mockup path or design link). Optional: short graphify summary if you ran one.
+- **Instruct**: "Follow graphify.md phase budget: **plan-first** (File changes); query only for gaps/blast radius. Implement all frontend tasks from this feature plan per compounding-dev-cycle Code phase. Use React, Ant Design, Jotai, TanStack Query as appropriate. Match the Design reference mockup for layout, copy, and states; the AC win on conflict. Create or modify the specified files. Integrate with the backend API. After edits, run `graphify update .` in the frontend root when the CLI is available. Produce handoff for Review/Test: implementation, tests where relevant, implementation notes. Link work to acceptance criteria. Do not expand scope. Return when complete."
 
 After A1–A2: aggregate **Code → Review/Test handoff**: Code phase summary (backend, frontend), Implementation notes (by agent), Test status.
 
@@ -68,12 +70,21 @@ After Code completes, spawn **backend-reviewer** and **frontend-reviewer**. Pass
 
 After B1–B2: aggregate Review summaries, Rework list (by severity), Test status. Verify **gates**: all AC covered by tests; no project-rule violations; no unresolved high-severity security or data-integrity issues.
 
-## Phase C: Decide — loop or production ready
+## Phase C: Decide — rework loop or Manual QA
 
 - **If any Critical rework items or any gate not passed:** Create a short rework plan (rework = new AC), write to `docs/plans/<feature>-rework-N.md` when N ≥ 1, spawn Code agents to fix (backend-architect and/or frontend-architect as needed), then repeat Phase B. Loop until no Critical issues and gates pass.
-- **When no Critical issues and gates pass:** Declare code **finalized and production ready**. Output final summary (what was built, where), implementation notes, review sign-off. If only Suggestion/Nice to have rework, still declare production ready; optionally offer to run Code with the rework list.
+- **When no Critical issues and gates pass:** go to **Phase D: Manual QA**. Suggestion/Nice to have items do not block QA.
 
-**Hand-off rules:** Code order: backend-architect then frontend-architect. Review: backend-reviewer and frontend-reviewer after Code. Backend-architect and backend-reviewer each **auto-select Python or C#** from the plan or from the files in scope.
+## Phase D: Manual QA (trigger automatically)
+
+**Mode:** AGENT (QA). Run `.claude/commands/manual-test.md` Steps 1–4 with this plan (preflight, spawn `qa-tester`, write `docs/qa/<feature>-qa-N.md`, verdict). Include rework plans' AC. Auth mode **unattended**.
+
+- **N/A** (no Frontend tasks and no UI-observable AC): say so in one line and treat as PASS.
+- **FAIL** (any AC FAIL or Critical QA item): write `docs/plans/<feature>-rework-N.md` with each failing case as a new AC (expected vs actual, screenshot path, suspected file). Phase A (only the agents needed) → Phase B → Phase D again.
+- **BLOCKED** only (sign-in, server down, missing data, backend not running locally, mutation needs approval): stop and ask the user to clear the named blocker. Do not send blocked cases to Code. Auth blockers: ask the user to sign in; when they reply, run `/manual-test` **Sign-in modes** `--login`, then Phase D again.
+- **PASS:** declare code **finalized and production ready**. Output final summary (what was built, where), implementation notes, review sign-off, QA report path. If only Suggestion/Nice to have items remain, still production ready; optionally offer to run Code with them.
+
+**Hand-off rules:** Code order: backend-architect then frontend-architect. Review: backend-reviewer and frontend-reviewer after Code. QA: qa-tester after Review is clean. Backend-architect and backend-reviewer each **auto-select Python or C#** from the plan or from the files in scope.
 
 Do not suggest manual handoff without specifying the required mode (ASK / PLAN / AGENT) for the next phase.
 
@@ -85,7 +96,7 @@ Do not suggest manual handoff without specifying the required mode (ASK / PLAN /
 
 This skill enforces the **compounding development cycle** (`.claude/rules/compounding-dev-cycle.md`) with strict phase discipline and **automatic mode switching** (ASK → PLAN → AGENT). When orchestrating the cycle, you MUST follow the rule's **Mode switching** and **Mode transition guide** sections.
 
-**Ticketboat agents:** backend-architect, frontend-architect, backend-reviewer, frontend-reviewer, tech-stack-researcher, technical-writer. Code phase: backend-architect, frontend-architect. Review phase: backend-reviewer, frontend-reviewer. **Backend-architect** and **backend-reviewer** each **auto-select language** (Python or C#) from the plan or from the files in scope—one agent for all backend work.
+**Ticketboat agents:** backend-architect, frontend-architect, backend-reviewer, frontend-reviewer, qa-tester, tech-stack-researcher, technical-writer. Code phase: backend-architect, frontend-architect. Review phase: backend-reviewer, frontend-reviewer. QA phase: qa-tester. **Backend-architect** and **backend-reviewer** each **auto-select language** (Python or C#) from the plan or from the files in scope—one agent for all backend work.
 
 ---
 
@@ -99,6 +110,7 @@ Switch modes explicitly as you progress. Each phase runs in a specific mode; sta
 | **1b. Plan authoring** | **PLAN**                | Write scope, AC, technical approach, task list. Output: single plan doc. Exit when another agent can implement without guessing.                 |
 | **2. Code**            | **AGENT**               | Full implementation. Subagents may edit, run commands, create files.                                                                             |
 | **3. Review/Test**     | **AGENT** (review-only) | Reviewers produce rework list and summary; do not apply changes unless explicitly asked. Spawn reviewer subagents (read-only: no Write or Edit). |
+| **3b. Manual QA**      | **AGENT (QA)**          | `qa-tester` drives a Playwright browser on the changed pages and grades each UI-observable AC PASS/FAIL/BLOCKED with screenshots. No code edits.  |
 | **4. Plan (rework)**   | **PLAN**                | Rework plan only; no implementation. Then AGENT (Code) → AGENT (Review) again.                                                                   |
 
 **Handoff rule:** When you delegate a phase, tell the recipient which mode to use (ASK / PLAN / AGENT) as defined in `.claude/rules/claude-code.md`. Example: "Implement in **AGENT (Code)**" or "Review read-only in **AGENT (Review)** and produce a rework list; do not apply changes." Follow the rule's **Mode transition guide** (Initial cycle and Rework cycle) for step order.
@@ -119,6 +131,8 @@ Switch modes explicitly as you progress. Each phase runs in a specific mode; sta
 - **Acceptance criteria:** Testable conditions (Given/When/Then or checklist).
 - **Technical approach:** Key components, APIs, data shapes; references to rules (e.g. `core-standards.md`, `api-routes-python.md`, `react-frontend.md`). Cite graph-derived targets when available.
 - **Task list:** Ordered implementation steps; concrete **File changes** (Code is plan-first).
+- **Design reference:** Supplied design, or `docs/plans/mockups/<feature>.html` generated with `.claude/skills/ui-mockup/SKILL.md` when the UI changes and no design exists.
+- **Manual QA:** Route, data, and per-AC steps for `qa-tester`.
 
 **Artifact:** Single plan doc (e.g. `docs/plans/<feature>.md`). Use `feature-plan` to produce it; then hand to project-manager for Code → Review/Test.
 
@@ -168,11 +182,25 @@ Switch modes explicitly as you progress. Each phase runs in a specific mode; sta
 - **Test status:** Which AC are covered; failing or missing tests.
 - **Rework list:** Concrete items (file/line or component + required change + **severity**). Severity: **Critical** (must fix before production), **Suggestion**, **Nice to have**.
 
-**Gates:** All acceptance criteria covered by tests; no project-rule violations; no unresolved high-severity security or data-integrity issues. **Production ready** only when all three gates pass and there are no Critical rework items.
+**Gates:** All acceptance criteria covered by tests; no project-rule violations; no unresolved high-severity security or data-integrity issues. **Production ready** only when all three gates pass, there are no Critical rework items, and Manual QA passes (or is N/A).
 
 **Agents (Review):** backend-reviewer, frontend-reviewer (auto-triggered after Code). Backend-reviewer auto-selects Python or C# from the files under review. Every Review prompt must include the **diff-first** graphify line.
 
-**Handoff rule:** If **Critical** rework or gates not passed → hand back to **PLAN** (rework = new AC), then AGENT (Code), then Review/Test again. If only Suggestion/Nice to have → declare production ready; optionally offer to hand to Code with the rework list and re-run Review/Test.
+**Handoff rule:** If **Critical** rework or gates not passed → hand back to **PLAN** (rework = new AC), then AGENT (Code), then Review/Test again. If only Suggestion/Nice to have → hand to **Manual QA** (Phase 3b).
+
+---
+
+## Phase 3b: Manual QA (AGENT (QA))
+
+**Goal:** Prove each UI-observable AC in the running app, the way a person would check it.
+
+**Inputs:** Plan AC (and rework AC), Manual QA section, Design reference, changed files, base URL. **Graphify:** diff-first; the diff and File changes name the page.
+
+**Process:** `/manual-test` Steps 1–4. `qa-tester` navigates straight to each route, acts through the UI, compares with the mockup, and saves a screenshot per verdict. Skill: `.claude/skills/manual-qa/SKILL.md`.
+
+**Outputs:** `docs/qa/<feature>-qa-N.md` and `docs/qa/<feature>/run-N/*.png`; verdict PASS / FAIL / BLOCKED / N/A per case.
+
+**Handoff rule:** FAIL → PLAN (rework = failing cases as AC) → Code → Review/Test → Manual QA. BLOCKED → user clears the blocker; no Code. PASS or N/A → production ready.
 
 ---
 
@@ -182,7 +210,7 @@ Switch modes explicitly as you progress. Each phase runs in a specific mode; sta
 
 **Mode:** **PLAN** (brief). Rework plan only; no implementation.
 
-**Inputs:** Rework list from Review/Test (especially Critical items), or new user request.
+**Inputs:** Rework list from Review/Test (especially Critical items), failing Manual QA cases, or new user request.
 
 **Process:** Turn rework into a short plan: scope = fixing issues, acceptance criteria = each critical item resolved, tasks for Code. **Write the rework plan to `docs/plans/<feature>-rework-N.md`** when N ≥ 1 (required for traceability). If the file cannot be written, keep in context and inform the user. Then **Code** (AGENT) → **Review/Test** (read-only reviewer subagents) again. Loop until no Critical issues and gates pass → declare **production ready**.
 
@@ -205,7 +233,7 @@ Switch modes explicitly as you progress. Each phase runs in a specific mode; sta
 ## When to use this skill
 
 - Running the **project-manager** command with a feature plan.
-- Delegating tasks to backend-architect, frontend-architect, backend-reviewer, frontend-reviewer.
+- Delegating tasks to backend-architect, frontend-architect, backend-reviewer, frontend-reviewer, qa-tester.
 - Ensuring the cycle follows Plan → Code → Review/Test → Plan using `.claude/rules/claude-code.md`.
 - Creating rework plans after review and looping until production ready.
 
@@ -217,6 +245,7 @@ Switch modes explicitly as you progress. Each phase runs in a specific mode; sta
 2. **1b Plan authoring** → **PLAN** (single plan doc; exit when implementable without guessing).
 3. **2. Code** → **AGENT** (implementation).
 4. **3. Review/Test** → **AGENT (Review)** for review output (rework list; do not apply).
-5. **4. Rework** → **PLAN** (brief), then repeat from step 3 until no Critical issues → production ready.
+5. **3b. Manual QA** → **AGENT (QA)** (`qa-tester` in a browser; report, do not fix).
+6. **4. Rework** → **PLAN** (brief), then repeat from step 3 until no Critical issues and no QA FAIL → production ready.
 
 Do not suggest manual handoff without specifying the required mode (ASK / PLAN / AGENT) for the next phase.

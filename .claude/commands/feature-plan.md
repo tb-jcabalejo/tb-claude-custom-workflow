@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Claude Code: plan file only
 
-Write only `docs/plans/<feature-slug>.md`. Do not implement application code, create other files, or run build or test commands. If asked to also implement, decline and point to `/project-manager` with this plan. PLAN behavior: `.claude/rules/claude-code.md`.
+Write only `docs/plans/<feature-slug>.md` and, when the UI mockup rule below applies, `docs/plans/mockups/<feature-slug>.html`. Do not implement application code, create other files, or run build or test commands. If asked to also implement, decline and point to `/project-manager` with this plan. PLAN behavior: `.claude/rules/claude-code.md`.
 
 ## Rules to follow
 
@@ -17,6 +17,7 @@ Write only `docs/plans/<feature-slug>.md`. Do not implement application code, cr
 - **Compounding cycle:** Follow the **Plan** phase in `.claude/rules/compounding-dev-cycle.md` (scope, acceptance criteria, technical approach, task list; handoff rule: plan complete when another agent can implement without guessing).
 - **Project-manager handoff:** Align with `.claude/commands/project-manager.md`: PLAN writes the plan only. `/project-manager` then runs Code (implementing subagents) and Review (read-only subagents). See `.claude/rules/claude-code.md`.
 - **Feature-planning skill:** Apply `.claude/skills/feature-planning/SKILL.md` so the plan includes all required sections for project-manager.
+- **UI mockup:** When Frontend tasks change what users see and the request supplies no design (Figma link, screenshot, image), apply `.claude/skills/ui-mockup/SKILL.md` and generate the mockup. It is the visual contract for frontend-architect and qa-tester.
 
 ## Feature / plan target
 
@@ -58,6 +59,13 @@ Include every section below so **project-manager** can load and delegate without
 10. **Dependencies / env**
    - Packages, env vars, config changes.
 
+11. **Design reference** (when Frontend tasks exist)
+   - Supplied design (link or attachment), or the generated mockup `docs/plans/mockups/<feature-slug>.html` with states and AC covered, or "No visual change".
+
+12. **Manual QA** (when any AC is UI-observable)
+   - Base URL, route(s), required role and a visible role check (for example a menu item only that role sees; never an email), test data and how to find it, mutations allowed (default: none), backend needed (local branch API or an existing environment).
+   - Table: AC | Route | Steps | Expected (observable) | Mockup state. At least one row per UI-observable AC; mark the rest N/A with where they are covered. `qa-tester` runs this after Review.
+
 ## Detailed output format (mandatory)
 
 Produce a **detailed** plan so project-manager and implementers can work without guessing. For each section, include the level of detail below.
@@ -96,7 +104,8 @@ Produce a **detailed** plan so project-manager and implementers can work without
 
 ## Output
 
-1. **Write the plan** to `docs/plans/<feature-slug>.md` using **all** required sections and the **detailed output format** above. The plan must be detailed enough that backend-architect and frontend-architect can implement without guessing scope, APIs, or file locations.
-2. **Confirm** the plan path and remind the user: "Run **project-manager** with this plan to execute Code → Review/Test (e.g. `/project-manager docs/plans/<feature-slug>.md`). This command wrote the plan only; no implementation was performed."
+1. **Write the plan** to `docs/plans/<feature-slug>.md` (and the mockup first, when the UI mockup rule applies) using **all** required sections and the **detailed output format** above. The plan must be detailed enough that backend-architect and frontend-architect can implement without guessing scope, APIs, or file locations.
+2. **Confirm** the plan path and remind the user: "Run **project-manager** with this plan to execute Code → Review/Test → Manual QA (e.g. `/project-manager docs/plans/<feature-slug>.md`). This command wrote the plan only; no implementation was performed."
+3. **Mockup:** if one was generated, give its absolute path and ask the user to open it before Code. It is the visual contract.
 
 Do not implement or modify application code.

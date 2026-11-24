@@ -38,6 +38,7 @@ Cursor mode names map to these behaviors in Claude Code (`.claude/rules/claude-c
 | **PLAN** | Edit only `docs/plans/**` (or the Linear issue, for `/refine-spec` and `/create-ticket`). No app code, builds, tests, or installs. |
 | **AGENT (Code)** | Spawn `backend-architect`, then `frontend-architect`. They edit files and run tests. |
 | **AGENT (Review)** | Spawn `backend-reviewer` and `frontend-reviewer`. Read-only; they return a rework list. |
+| **AGENT (QA)** | Spawn `qa-tester`. It tests the changed pages in a Playwright browser against each AC. No code edits; the parent writes `docs/qa/<slug>-qa-N.md`. |
 
 ### Why XML beats a single prose prompt
 
@@ -52,6 +53,7 @@ For complex work, `token-policy.md` asks for a short internal XML blueprint (`<r
 | [uv](https://docs.astral.sh/uv/) | Installs the Graphify CLI | Recommended |
 | Python 3 | Hook scripts (`session-init.sh` emits JSON with `python3`) | Yes |
 | Linear MCP (claude.ai Linear connector) | `/apply-ticket`, `/refine-spec`, `/create-ticket` | For Linear commands |
+| Node.js 18+ (`npx` on PATH) and Google Chrome | `qa-tester` starts the Playwright MCP server (`@playwright/mcp`) and drives Chrome | For `/manual-test` and Phase D of `/project-manager` |
 | Product stacks | Python/FastAPI (ruff, black, mypy, pytest), C#/.NET 8 (xUnit/NUnit), React/Vite/TypeScript (pnpm, Vitest) | Per repo |
 
 ## Repository layout
@@ -64,7 +66,10 @@ CLAUDE.md                 Session contract, command table, subagent list
   rules/                  Always-on and path-scoped rules
   agents/                 Subagent definitions
   commands/               Slash commands
+  scripts/                Helper scripts called by commands (daily-git-activity.sh, nrd-review-bundle.sh)
   skills/                 Skills loaded by commands, agents, or on demand
+docs/
+  research/nrd-sight/     How NRD Sight reviews PRs and scans repos (study + review corpus for calibrating /nrd-review)
 ```
 
 ## Commands
@@ -73,17 +78,21 @@ Slash commands in `.claude/commands/`. All except `/trace-flow` set `disable-mod
 
 | Command | Mode | What it does |
 |---|---|---|
-| `/feature-plan <slug>` | PLAN | Writes `docs/plans/<slug>.md` only (AC, File changes, tasks). |
-| `/apply-ticket <issue>` | PLAN | Reads one Linear issue (read-only) and writes a plan. Stops after PLAN. |
+| `/feature-plan <slug>` | PLAN | Writes `docs/plans/<slug>.md` (AC, File changes, tasks, Manual QA), plus `docs/plans/mockups/<slug>.html` when the UI changes and no design exists. |
+| `/apply-ticket <issue>` | PLAN | Reads one Linear issue (read-only) and writes a plan, plus a mockup when the ticket changes the UI but has no design. Stops after PLAN. |
 | `/refine-spec <issue>` | PLAN | Tightens a Linear issue spec and updates the ticket. No product code. |
 | `/create-ticket [title]` | PLAN | Creates one Linear issue. Clarifies vague input first. |
-| `/project-manager <plan-path>` | AGENT | Runs Code → Review → rework until production ready. |
+| `/project-manager <plan-path>` | AGENT | Runs Code → Review → Manual QA → rework until production ready. |
 | `/new-task <task>` | — | Task breakdown and implementation plan in chat. Does not write `docs/plans/`. |
 | `/api-new <endpoint>` | AGENT | New FastAPI endpoint with Pydantic validation, error handling, async. |
 | `/api-test <endpoint>` | AGENT | pytest + httpx tests for an endpoint. |
 | `/code-cleanup <file>` | AGENT | Refactor for readability and best practices (Python and TypeScript). |
 | `/code-optimize <file>` | AGENT | Measure-first performance pass. |
 | `/trace-flow <page or action>` | Read-only | Traces a page or action from route load through API, functions, DB, and UI to `docs/traces/<slug>.md`, with a flowchart. |
+| `/nrd-review <owner/repo#N \| N \| --local [base]> [--sha <c>] [--compare] [--post]` | AGENT (Review) | Reviews a PR or the current branch the way NRD Sight does: material findings only, graded critical / important / consider with Fix / Where / Cost, checked against the linked Linear ticket and the PR description, and re-checked against earlier findings and replies. Saves `docs/reviews/<repo>-<N>-<sha7>.md`. `--compare` scores it against NRD Sight's review of the same commit; `--post` posts it as a COMMENT review with inline comments. Needs `gh`, `jq`, and the Linear MCP for tickets. |
+| `/nrd-scan <repo> [paths] [--tickets]` | Read-only | Security and business-logic scan in NRD Sight's scan format (rule ids, exploitability, data at risk, blast radius, fix brief) to `docs/scans/<repo>-<date>.md`. Creates Linear issues only after you confirm. |
+| `/manual-test <plan-path> [AC-n ...]` | AGENT (QA) | Opens the app in Chrome via Playwright, goes to the exact pages changed, checks every UI-observable AC against the mockup, and writes `docs/qa/<slug>-qa-N.md` with screenshots. `--login [role]` opens Chrome for you to sign in once; `--logout` signs out. |
+| `/daily-report [48h \| 3d \| since <date time> \| next=<date>]` | Read-only | Drafts a paste-ready daily report (what I did, next working day, blockers) from Linear, Teams chats and calendar, and local git commits and pushes via `.claude/scripts/daily-git-activity.sh`. Never posts or edits anything. Needs the Linear and Microsoft 365 MCPs. Set `DAILY_REPORT_ROOTS` if your repos are not one level under the workspace root. |
 
 After `/feature-plan` or `/apply-ticket`, run `/clear`, then `/project-manager <plan-path>`, so the planning context does not carry into Code.
 
@@ -97,6 +106,8 @@ Subagents in `.claude/agents/`, spawned with the Agent tool by `name`.
 | `frontend-architect` | Implements UI (React 18, Vite, Ant Design 5, Jotai, TanStack Query). | Read, Grep, Glob, Bash, Edit, Write, Skill |
 | `backend-reviewer` | Reviews backend code per file language; returns Critical / Suggestion / Nice-to-have rework. | Read, Grep, Glob, Bash, Skill (read-only) |
 | `frontend-reviewer` | Reviews UI for correctness, accessibility, performance, and standards. | Read, Grep, Glob, Bash, Skill (read-only) |
+| `nrd-reviewer` | NRD Sight–style review of one PR, branch, or repo scan; returns the review body or scan report plus a findings JSON. Never posts. | Read, Grep, Glob, Bash, Skill (read-only) |
+| `qa-tester` | Manual browser QA: navigates the changed pages with Playwright and grades each AC PASS / FAIL / BLOCKED with screenshots. Never edits code. | All except Edit, Write, NotebookEdit; its own Playwright MCP server |
 | `tech-stack-researcher` | Evaluates technology choices against the Ticketboat stack during planning. | Read, Grep, Glob, Bash, WebFetch, WebSearch, Skill |
 | `technical-writer` | API references, guides, READMEs, runbooks. | Read, Grep, Glob, Bash, Edit, Write, Skill |
 
@@ -108,7 +119,7 @@ Skills in `.claude/skills/<name>/SKILL.md`.
 
 | Group | Skills |
 |---|---|
-| Orchestration | `feature-planning`, `agent-selection`, `graphify-navigation`, `trace-flow` |
+| Orchestration | `feature-planning`, `agent-selection`, `graphify-navigation`, `trace-flow`, `ui-mockup`, `manual-qa`, `nrd-review` (rubric + review and scan templates) |
 | Graph build | `graphify` (official `/graphify` skill: build, `--update`, wiki, hooks only; not for routine queries) |
 | Backend skillsets | `backend-architect`, `backend-reviewer` (bundle api-design-patterns, postgresql, security-audit, code-review; Python adds api-testing) |
 | Frontend skillsets | `frontend-architect`, `frontend-reviewer` (bundle accessibility-checklist, performance-profiling, code-review) |
@@ -166,7 +177,7 @@ Claude Code reads `CLAUDE.md` and `.claude/` from the directory it starts in. Co
 cd ~/Documents/Project/TicketBoat          # folder holding admin-frontend, admin-api-python, ...
 cp tb-claude-custom-workflow/CLAUDE.md .
 cp -R tb-claude-custom-workflow/.claude .
-chmod +x .claude/hooks/*.sh
+chmod +x .claude/hooks/*.sh .claude/scripts/*.sh
 ```
 
 Expected layout:
@@ -205,24 +216,42 @@ Commit `graphify-out/` (except `cost.json`) so the team shares the graph. Withou
 
 The Linear commands need the Linear MCP. Enable the Linear connector in your claude.ai connector settings, or add it with `claude mcp add`, then check it with `/mcp`.
 
-### 5. Verify
+### 5. Set up browser QA (Playwright)
+
+`qa-tester` declares its own Playwright MCP server in its agent file (`npx -y @playwright/mcp@latest`). It connects only while that agent runs, so nothing is added to your global MCP config.
+
+- Install Node.js 18+ so `npx` is on PATH (for example `brew install node`), and Google Chrome.
+- Start the app's dev server yourself, or let `/manual-test` start it. It refuses to run when the app points at the production API.
+
+#### Sign-in for browser QA
+
+The admin app signs in with a Microsoft popup (Firebase), and the admin API ends each session at a server-set expiry. The workflow never stores or types credentials: you sign in, and the tester reuses that browser session.
+
+1. Run `/manual-test --login [role]`. Chrome opens; complete the Microsoft popup. Use a dedicated least-privilege QA account per role if you have one, not your personal admin account.
+2. The session lives in Playwright's persistent profile for this workspace (`~/Library/Caches/ms-playwright/mcp-chrome-<hash>`) and lasts until the admin API session expires.
+3. Standalone `/manual-test` waits up to 3 minutes if you need to sign in. Inside `/project-manager` it does not wait: it reports BLOCKED (auth) and asks you to sign in.
+4. `/manual-test --logout` signs out. Deleting the profile folder wipes it completely.
+
+Fully unattended runs need a non-interactive QA identity that the admin API accepts (for example a Firebase custom token for a QA user, enabled only in local dev). That needs app, API, and security changes; plan it separately.
+
+### 6. Verify
 
 Start Claude Code in the workspace root and confirm:
 
 - The session opens with the Ticketboat reminder from `session-init.sh`.
 - `/` lists `feature-plan`, `project-manager`, `apply-ticket`, and the other commands.
-- `/agents` lists the six Ticketboat subagents.
+- `/agents` lists the seven Ticketboat subagents.
 - `.claude/hooks/audit.log` gains entries after a Bash call.
 
 ## Daily use
 
 1. **Plan:** `/feature-plan <slug>` or `/apply-ticket <issue>` writes `docs/plans/<slug>.md`.
-2. **Review the plan** yourself and edit it if needed.
+2. **Review the plan** and the mockup (`docs/plans/mockups/<slug>.html`, when generated) yourself and edit them if needed.
 3. `/clear`
-4. **Build:** `/project-manager docs/plans/<slug>.md` runs Code, then Review, and loops on Critical rework.
+4. **Build:** `/project-manager docs/plans/<slug>.md` runs Code, Review, then Manual QA in a real browser, and loops on Critical rework or QA failures.
 5. **Commit:** Claude leaves changes uncommitted unless you ask. Review the diff, then commit and push yourself.
 
-Other entry points: `/trace-flow` to understand an existing page before planning, `/refine-spec` to tighten a ticket before `/apply-ticket`, and `/api-new` or `/api-test` for single-endpoint work.
+Other entry points: `/manual-test` to re-check a page against its plan after manual fixes, `/trace-flow` to understand an existing page before planning, `/refine-spec` to tighten a ticket before `/apply-ticket`, and `/api-new` or `/api-test` for single-endpoint work.
 
 ## Stacks
 
